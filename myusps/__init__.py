@@ -39,7 +39,7 @@ CHROME_WEBDRIVER_ARGS = [
 ]
 FIREFOXOPTIONS = Options()
 FIREFOXOPTIONS.add_argument("--headless")
-
+FIREFOXEXECPATH = '/share/bin/geckodriver'
 
 class USPSError(Exception):
     """USPS error."""
@@ -146,7 +146,7 @@ def _get_driver(driver_type):
     if driver_type == 'phantomjs':
         return webdriver.PhantomJS(service_log_path=os.path.devnull)
     if driver_type == 'firefox':
-        return webdriver.Firefox(firefox_options=FIREFOXOPTIONS)
+        return webdriver.Firefox(executable_path=FIREFOXEXECPATH, firefox_options=FIREFOXOPTIONS)
     elif driver_type == 'chrome':
         chrome_options = webdriver.ChromeOptions()
         for arg in CHROME_WEBDRIVER_ARGS:
