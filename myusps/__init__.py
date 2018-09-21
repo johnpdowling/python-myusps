@@ -39,7 +39,7 @@ CHROME_WEBDRIVER_ARGS = [
 ]
 FIREFOXOPTIONS = Options()
 FIREFOXOPTIONS.add_argument("--headless")
-FIREFOXEXECPATH = '/share/bin/geckodriver'
+FIREFOXEXECPATH = '/share/bin'
 
 class USPSError(Exception):
     """USPS error."""
