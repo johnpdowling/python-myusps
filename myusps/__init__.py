@@ -27,7 +27,8 @@ DASHBOARD_URL = 'https://informeddelivery.usps.com/box/pages/secure/DashboardAct
 INFORMED_DELIVERY_IMAGE_URL = 'https://informeddelivery.usps.com/box/pages/secure/'
 PROFILE_URL = 'https://store.usps.com/store/myaccount/profile.jsp'
 WELCOME_TITLE = 'Welcome | USPS'
-LOGIN_TIMEOUT = 10
+WELCOME = 'Welcome'
+LOGIN_TIMEOUT = 15
 COOKIE_PATH = './usps_cookies.pickle'
 CACHE_PATH = './usps_cache'
 ATTRIBUTION = 'Information provided by www.usps.com'
@@ -182,7 +183,8 @@ def _login(session):
     password.send_keys(session.auth.password)
     driver.find_element_by_id('btn-submit').click()
     try:
-        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
+        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_contains(WELCOME))
+#        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
     except TimeoutException:
         raise USPSError('login failed')
     for cookie in driver.get_cookies():
