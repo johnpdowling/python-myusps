@@ -186,7 +186,7 @@ def _login(session):
         WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_contains(WELCOME))
 #        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
     except TimeoutException:
-        raise USPSError('login failed')
+        raise USPSError('login failed, title: ' + driver.title)
     for cookie in driver.get_cookies():
         session.cookies.set(name=cookie['name'], value=cookie['value'])
     _save_cookies(session.cookies, session.auth.cookie_path)
