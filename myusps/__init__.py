@@ -181,7 +181,9 @@ def _login(session):
     username.send_keys(session.auth.username)
     password = driver.find_element_by_name('password')
     password.send_keys(session.auth.password)
-    driver.find_element_by_id('btn-submit').click()
+    
+#    driver.find_element_by_id('btn-submit').click()
+    driver.find_element_by_id('btn-submit').send_keys(Keys.ENTER)
     try:
         WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_contains(WELCOME))
 #        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
