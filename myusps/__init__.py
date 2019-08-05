@@ -187,7 +187,7 @@ def _login(session):
     try:
         WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.element_to_be_clickable((By.ID, 'btn-submit')))
     except TimeoutException:
-        raise USPSError('failed to find submit button clickable)
+        raise USPSError('failed to find submit button clickable')
     driver.find_element_by_id('btn-submit').click()
     try:
         WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_contains(WELCOME))
