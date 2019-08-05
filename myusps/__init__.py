@@ -209,11 +209,12 @@ def _get_dashboard(session, date=None):
         date = datetime.datetime.now().date()
     response = session.get(DASHBOARD_URL, params={
         'selectedDate': '{0:%m}/{0:%d}/{0:%Y}'.format(date)
-    }, allow_redirects=False)
+    }, allow_redirects=True)
+#    }, allow_redirects=False)
     # If we get a HTTP redirect, the session has expired and
     # we need to login again (handled by @authenticated)
-    if response.status_code == 302:
-        raise USPSError('expired session')
+#    if response.status_code == 302:
+#        raise USPSError('expired session')
     return response
 
 
