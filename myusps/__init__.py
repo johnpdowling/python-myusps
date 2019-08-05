@@ -178,23 +178,26 @@ def _login(session):
     except WebDriverException as exception:
         raise USPSError(str(exception))
     driver.get(LOGIN_URL)
+    try:
+        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.element_to_be_clickable((By.ID, 'username')))
+        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.element_to_be_clickable((By.ID, 'password')))
+        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.element_to_be_clickable((By.ID, 'btn-submit')))
+    except TimeoutException:
+        raise USPSError('failed to find clickable elements')
+        
     username = driver.find_element_by_name('username')
     username.send_keys(session.auth.username)
     password = driver.find_element_by_name('password')
     password.send_keys(session.auth.password)
     
 #    driver.find_element_by_id('btn-submit').click()
+    driver.find_element_by_id('btn-submit').submit()
 #    driver.find_element_by_id('btn-submit').send_keys(u'\ue007') #keys.ENTER
+    
     try:
-        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.element_to_be_clickable((By.ID, 'btn-submit')))
+        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
     except TimeoutException:
-        raise USPSError('failed to find submit button clickable')
-    driver.find_element_by_id('btn-submit').click()
-    try:
-        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_contains(WELCOME))
-#        WebDriverWait(driver, LOGIN_TIMEOUT).until(EC.title_is(WELCOME_TITLE))
-    except TimeoutException:
-        raise USPSError('login failed, title: ' + driver.title)
+        raise USPSError('login failed, title: ' + driver.title + ' ' + username.get_text() + ' ' + password.get_text())
     for cookie in driver.get_cookies():
         session.cookies.set(name=cookie['name'], value=cookie['value'])
     _save_cookies(session.cookies, session.auth.cookie_path)
