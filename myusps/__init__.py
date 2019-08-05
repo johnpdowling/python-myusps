@@ -222,6 +222,8 @@ def authenticated(function):
     def wrapped(*args):
         """Wrap function."""
         try:
+            _LOGGER.info("logging in before get")
+            _login(args[0])
             return function(*args)
         except USPSError:
             _LOGGER.info("attempted to access page before login")
